@@ -29,31 +29,45 @@ app.use(bodyParser.json());
 
 // home route
 app.get('/',(req,res)=>{
-  res.json({
+  res.status(200).json({
     message: `Welcome My Notes App`
   });
 });
 
-const notes = [
+let notes = [
   {id:1,title:'Note One',comment: 'This First Note'},
   {id:2,title:'Note Two',comment: 'This Second Note'}
 ]
 
 // notes route
 app.get('/notes',(req,res)=>{
-  res.json(notes);
+  if( notes.length == 0) {
+    return res.status(404).json({
+      msg: 'No Notes Found or Not Yet Created'
+    });
+  }
+  else {
+    return res.status(200).json(notes);
+  }
 });
 
 // single note route
 app.get('/notes/:id',(req,res)=>{
-  const id = req.params.id;
-  const note = notes.filter(item => item.id === parseInt(id));
-  res.json(note);
+  const id = parseInt(req.params.id);
+  const note = notes.find(item => item.id === id);
+  if ( note) {
+    return res.status(200).json(note);
+  }
+  else {
+    res.status(404).json({
+      msg: 'Notes Not Found'
+    });
+  }
 });
 
 // not found route
 app.get('*',(req,res)=> {
-  res.json({
+  res.status(404).json({
     error: '404 Not Found'
   })
 })
