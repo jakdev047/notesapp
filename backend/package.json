@@ -1,0 +1,11 @@
+{
+  "name": "notesapp",
+  "version": "1.0.0",
+  "description": "Notes Create App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jubayer Alam Khan",
+  "license": "ISC"
+}
