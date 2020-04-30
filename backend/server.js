@@ -15,10 +15,16 @@ app.use(bodyParser.json());
 
 // route
 app.get('/',(req,res)=>{
-  res.send({
+  res.json({
     message: `Welcome My Notes App`
   });
 });
+
+app.get('*',(req,res)=> {
+  res.json({
+    error: '404 !!!'
+  })
+})
 
 // listen
 app.listen(PORT,()=>{
