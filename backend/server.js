@@ -9,6 +9,9 @@ const app = express();
 /* ============ Port ============= */
 const PORT = process.env.PORT || 8080;
 
+/* ============ Model============= */
+const Note = require('./models/notes');
+
 /* ============ Connecting mongodb ============= */
 mongoose
 .connect('mongodb://localhost:27017/notesapp', {useNewUrlParser: true, useUnifiedTopology: true})
@@ -30,10 +33,19 @@ app.get('/',(req,res)=>{
   });
 });
 
-let notes = [
-  {id:1,title:'Note One',comment: 'This First Note'},
-  {id:2,title:'Note Two',comment: 'This Second Note'}
-]
+// adding note
+app.post('/notes',async(req,res)=> {
+  const newNote = new Note(req.body);
+  try {
+    await newNote.save();
+    res.status(202).json(newNote);
+    // notes = [...notes,newNote];
+    // res.status(202).json(notes);
+  } 
+  catch (err) {
+    res.status(400).send(err)
+  }
+});
 
 // notes route
 app.get('/notes',(req,res)=>{
@@ -59,13 +71,6 @@ app.get('/notes/:id',(req,res)=>{
       msg: 'Notes Not Found'
     });
   }
-});
-
-// adding note
-app.post('/notes',(req,res)=> {
-  const newNote = req.body;
-  notes = [...notes,newNote];
-  res.status(202).json(notes);
 });
 
 // update note
