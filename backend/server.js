@@ -116,15 +116,20 @@ app.put('/notes/:id',(req,res)=>{
 // delete note
 app.delete('/notes/:id',(req,res)=>{
   const deleteId = parseInt(req.params.id);
-  const deleteNote = notes.find(note=>note.id === deleteId);
-  if(deleteNote){
-    notes = notes.filter(note=> note.id !== deleteId);
-    return res.status(202).json(notes);
-  }
-  else{
-    return res.status(404).json({
-      msg: 'Not Not Found!!!'
-    });
+  try {
+    const deleteNote = notes.find(note=>note.id === deleteId);
+    if(deleteNote){
+      notes = notes.filter(note=> note.id !== deleteId);
+      return res.status(202).json(notes);
+    }
+    else{
+      return res.status(404).json({
+        msg: 'Not Not Found!!!'
+      });
+    }
+  } 
+  catch (error) {
+    return res.status(500).json('Internal Server Error')
   }
 })
 
