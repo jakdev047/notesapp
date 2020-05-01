@@ -65,6 +65,13 @@ app.get('/notes/:id',(req,res)=>{
   }
 });
 
+// adding note
+app.post('/notes',(req,res)=> {
+  const newNote = req.body;
+  notes = [...notes,newNote];
+  res.status(202).json(notes);
+})
+
 // not found route
 app.get('*',(req,res)=> {
   res.status(404).json({
