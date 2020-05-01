@@ -70,6 +70,47 @@ app.post('/notes',(req,res)=> {
   const newNote = req.body;
   notes = [...notes,newNote];
   res.status(202).json(notes);
+});
+
+// update note
+app.put('/notes/:id',(req,res)=>{
+  const updateNoteId = parseInt(req.params.id); // id
+  const updateNoteInput = req.body; // {id,title,comment}
+  const gotUserInput = Object.keys(updateNoteInput); // id, title, comment
+  const allowUpdates = ['title','comment']; // title, comment
+  try{
+    const isAllowed = gotUserInput.every( update => allowUpdates.includes(update)); // false
+    if(!isAllowed) {
+      return res.status(400).json({
+        msg: 'Invalid Oparation'
+      })
+    }
+    const note = notes.find(note=>note.id === updateNoteId);
+    if(note){
+      //success update
+      return notes = notes.map(note => {
+        if( note.id === updateNoteId) {
+          return res.status(202).json({
+            ...note,
+            ...updateNoteInput
+          })
+        }
+        else {
+          return res.status(202).json(note);
+        }
+      })
+    }
+    else {
+      // deal with note that note found
+      return res.status(400).json({
+        msg: 'Not Note Found'
+      })
+    }
+  }
+  // server error
+  catch(err){
+    return res.status(500).json('Internal Server Error')
+  };
 })
 
 // not found route
