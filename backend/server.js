@@ -1,31 +1,27 @@
-/* ===============
-    Require Files
-  ================
-*/
+/* =============== Require Files ================ */
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
 
-/* ============
-    Port
-  =============
-*/
+/* ============ Port ============= */
 const PORT = process.env.PORT || 8080;
 
-/* ===============
-    Middleweare
-  ================
-*/
+/* ============ Connecting mongodb ============= */
+mongoose
+.connect('mongodb://localhost:27017/notesapp', {useNewUrlParser: true, useUnifiedTopology: true})
+.then( () => console.log('DataBase Connected Succesfully'))
+.catch( err => console.log(err));
+
+
+/* =============== Middleweare ================ */
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-/* ============
-    Route
-  =============
-*/
+/* ============ Route ============= */
 
 // home route
 app.get('/',(req,res)=>{
@@ -140,10 +136,7 @@ app.get('*',(req,res)=> {
   })
 })
 
-/* ============
-    Listen
-  =============
-*/
+/* ============ Listen ============= */
 app.listen(PORT,()=>{
   console.log(`${PORT} Server is Running...`)
 });
