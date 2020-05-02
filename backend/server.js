@@ -75,11 +75,11 @@ app.get('/notes',async(req,res)=>{
 });
 
 // single note route
-app.get('/notes/:id',check('id','Noote not Found').isMongoId(),async(req,res)=>{
+app.get('/notes/:id',check('id','Note not Found').isMongoId(),async(req,res)=>{
   const id = req.params.id;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+    return res.status(404).json({ errors: errors.array() });
   }
   try {
     const note = await Note.findById(id);
@@ -139,13 +139,16 @@ app.put('/notes/:id',(req,res)=>{
 })
 
 // delete note
-app.delete('/notes/:id',(req,res)=>{
-  const deleteId = parseInt(req.params.id);
+app.delete('/notes/:id',check('id','Note Not Found').isMongoId(),async(req,res)=>{
+  const deleteId = req.params.id;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(404).json({ errors: errors.array() });
+  }
   try {
-    const deleteNote = notes.find(note=>note.id === deleteId);
+    const deleteNote = await Note.findByIdAndDelete(deleteId);
     if(deleteNote){
-      notes = notes.filter(note=> note.id !== deleteId);
-      return res.status(202).json(notes);
+      return res.status(200).json(notes);
     }
     else{
       return res.status(404).json({
