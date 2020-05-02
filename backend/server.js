@@ -35,51 +35,65 @@ app.get('/',(req,res)=>{
 });
 
 // adding note
-app.post('/notes',
-[
-  check('title').notEmpty().isLength({min:3,max:50}).withMessage('Titile is Required & must 3 to 50 charecter'),
-  check('comment').notEmpty().isLength({min:5,max:500}).withMessage('Comment is Required & must 5 to 500 charecter')
-],
-async(req,res)=> {
+app.post('/notes',[
+    check('title').notEmpty().isLength({min:3,max:50}).withMessage('Titile is Required & must 3 to 50 charecter'),
+    check('comment').notEmpty().isLength({min:5,max:500}).withMessage('Comment is Required & must 5 to 500 charecter')
+  ],
+  async(req,res)=> {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    try {
+      const newNote = new Note(req.body);
+      await newNote.save();
+      res.status(200).json(newNote);
+      // notes = [...notes,newNote];
+      // res.status(202).json(notes);
+    } 
+    catch (err) {
+      res.status(500).send(err)
+    }
+});
+
+// notes route
+app.get('/notes',async(req,res)=>{
+  try {
+    const notes = await Note.find(); // all notes collections
+    if( notes.length == 0) {
+      return res.status(404).json({
+        msg: 'No Notes Found or Not Yet Created'
+      });
+    }
+    else {
+      return res.status(200).json(notes);
+    }
+  } 
+  catch (error) {
+    res.status(500).send(err)
+  }
+});
+
+// single note route
+app.get('/notes/:id',check('id','Noote not Found').isMongoId(),async(req,res)=>{
+  const id = req.params.id;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
   try {
-    const newNote = new Note(req.body);
-    await newNote.save();
-    res.status(202).json(newNote);
-    // notes = [...notes,newNote];
-    // res.status(202).json(notes);
+    const note = await Note.findById(id);
+    if ( note) {
+      return res.status(200).json(note);
+    }
+    else {
+      res.status(404).json({
+        msg: 'Notes Not Found'
+      });
+    }
   } 
-  catch (err) {
-    res.status(400).send(err)
-  }
-});
-
-// notes route
-app.get('/notes',(req,res)=>{
-  if( notes.length == 0) {
-    return res.status(404).json({
-      msg: 'No Notes Found or Not Yet Created'
-    });
-  }
-  else {
-    return res.status(200).json(notes);
-  }
-});
-
-// single note route
-app.get('/notes/:id',(req,res)=>{
-  const id = parseInt(req.params.id);
-  const note = notes.find(item => item.id === id);
-  if ( note) {
-    return res.status(200).json(note);
-  }
-  else {
-    res.status(404).json({
-      msg: 'Notes Not Found'
-    });
+  catch (error) {
+    res.status(500).send(err)
   }
 });
 
