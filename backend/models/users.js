@@ -31,7 +31,7 @@ const usersSchema = new Schema(
       required: [true,'Password is Required'],
       validate:{
         validator(value){
-          return value.toLowercase().includes('password');
+          return !value.toLowerCase().includes('password');
         },
         message: " Password must not contain 'password' "
       }
