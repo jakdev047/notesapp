@@ -17,11 +17,9 @@ const Note = require('./models/notes');
 const {addNoteController,getAllNotesController,getSingleNoteController,updateNoteController,deleteNoteController} = require('./controllers/notesControllers');
 
 /* ============ Connecting mongodb ============= */
-mongoose
-.connect('mongodb://localhost:27017/notesapp', {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
-.then( () => console.log('DataBase Connected Succesfully'))
-.catch( err => console.log(err));
+const {connectDB} = require('./db/dbConnect');
 
+connectDB();
 
 /* =============== Middleweare ================ */
 app.use(cors());
@@ -47,7 +45,7 @@ app.post('/notes',[
 app.get('/notes',getAllNotesController);
 
 // single note route
-app.get('/notes/:id',check('id','Note not Found').isMongoId(),getSingleNoteController);
+app.get('/notes/:id',[check('id','Note not Found').isMongoId()],getSingleNoteController);
 
 // update note
 app.put('/notes/:id',[
