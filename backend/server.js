@@ -26,24 +26,13 @@ app.use(bodyParser.json());
 /* ============ Route ============= */
 
 const notesRoute = require('./routes/routes');
-
-// home route
-app.get('/',(req,res)=>{
-  res.status(200).json({
-    message: `Welcome My Notes App`
-  });
-});
+const indexRoute = require('./routes');
 
 // notes route
 app.use('/notes',notesRoute);
 
-
-// not found route
-app.get('*',(req,res)=> {
-  res.status(404).json({
-    error: '404 Not Found'
-  })
-})
+// base route
+app.use('/',indexRoute)
 
 /* ============ Listen ============= */
 app.listen(PORT,()=>{
