@@ -42,7 +42,7 @@ module.exports.getSingleNoteController = async(req,res)=>{
   try {
     const note = await Note.findById(id);
     if ( note) {
-      return res.status(200).json(note);
+      return res.status(200).send(note);
     }
     else {
       res.status(404).json({
@@ -98,7 +98,7 @@ module.exports.deleteNoteController = async(req,res)=>{
   try {
     const deleteNote = await Note.findByIdAndDelete(deleteId);
     if(deleteNote){
-      return res.status(200).json(notes);
+      return res.status(200).send(deleteNote);
     }
     else{
       return res.status(404).json({

@@ -1,7 +1,5 @@
 /* =============== Require Files ================ */
 const express = require('express');
-const mongoose = require('mongoose');
-const { check,validationResult} = require('express-validator');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -11,10 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 /* ============ Model============= */
-const Note = require('./models/notes');
 
 /* ============ Controller ============= */
-const {addNoteController,getAllNotesController,getSingleNoteController,updateNoteController,deleteNoteController} = require('./controllers/notesControllers');
+
 
 /* ============ Connecting mongodb ============= */
 const {connectDB} = require('./db/dbConnect');
@@ -28,6 +25,8 @@ app.use(bodyParser.json());
 
 /* ============ Route ============= */
 
+const notesRoute = require('./routes/routes');
+
 // home route
 app.get('/',(req,res)=>{
   res.status(200).json({
@@ -35,27 +34,9 @@ app.get('/',(req,res)=>{
   });
 });
 
-// adding note
-app.post('/notes',[
-    check('title').notEmpty().isLength({min:3,max:50}).withMessage('Titile is Required & must 3 to 50 charecter'),
-    check('comment').notEmpty().isLength({min:5,max:500}).withMessage('Comment is Required & must 5 to 500 charecter')
-  ],addNoteController);
-
 // notes route
-app.get('/notes',getAllNotesController);
+app.use('/notes',notesRoute);
 
-// single note route
-app.get('/notes/:id',[check('id','Note not Found').isMongoId()],getSingleNoteController);
-
-// update note
-app.put('/notes/:id',[
-  check('id','Note No Found').isMongoId(),
-  check('title','title is required').optional().notEmpty(),
-  check('comment','comment is required').optional().notEmpty(),
-  ],updateNoteController)
-
-// delete note
-app.delete('/notes/:id',check('id','Note Not Found').isMongoId(),deleteNoteController)
 
 // not found route
 app.get('*',(req,res)=> {
