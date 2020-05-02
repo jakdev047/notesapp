@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 
 module.exports.allUser = async(req,res) => {
   try {
-    const users = await User.find();
+    const users = await User.find({},'-password');
     if(users.length === 0) {
       return res.status(404).send("Users not Created")
     }
@@ -36,4 +36,20 @@ module.exports.addUser = async(req,res) => {
     res.status(500).send(err)
   }
 
+};
+
+module.exports.singleUser = async(req,res) => {
+  const id = req.params.id;
+  try {
+    const user = await User.findById(id);
+    if(user) {
+      return res.status(200).send(user)
+    }
+    else {
+      return res.status(404).send("User not Found")
+    }
+  } 
+  catch (error) {
+    console.log(error)
+  }
 };
