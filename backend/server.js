@@ -15,7 +15,7 @@ const Note = require('./models/notes');
 
 /* ============ Connecting mongodb ============= */
 mongoose
-.connect('mongodb://localhost:27017/notesapp', {useNewUrlParser: true, useUnifiedTopology: true})
+.connect('mongodb://localhost:27017/notesapp', {useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify:false})
 .then( () => console.log('DataBase Connected Succesfully'))
 .catch( err => console.log(err));
 
@@ -98,44 +98,42 @@ app.get('/notes/:id',check('id','Note not Found').isMongoId(),async(req,res)=>{
 });
 
 // update note
-app.put('/notes/:id',(req,res)=>{
-  const updateNoteId = parseInt(req.params.id); // id
-  const updateNoteInput = req.body; // {id,title,comment}
-  const gotUserInput = Object.keys(updateNoteInput); // id, title, comment
+app.put('/notes/:id',[
+  check('id','Note No Found').isMongoId(),
+  check('title','title is required').optional().notEmpty(),
+  check('comment','comment is required').optional().notEmpty(),
+  ],async(req,res)=>{
+
+  const updateNoteId = req.params.id; // id
+
+  const gotUserInput = Object.keys(req.body); // id, title, comment
   const allowUpdates = ['title','comment']; // title, comment
-  try{
-    const isAllowed = gotUserInput.every( update => allowUpdates.includes(update)); // false
-    if(!isAllowed) {
-      return res.status(400).json({
-        msg: 'Invalid Oparation'
-      })
-    }
-    const note = notes.find(note=>note.id === updateNoteId);
-    if(note){
-      //success update
-      return notes = notes.map(note => {
-        if( note.id === updateNoteId) {
-          return res.status(202).json({
-            ...note,
-            ...updateNoteInput
-          })
-        }
-        else {
-          return res.status(202).json(note);
-        }
-      })
-    }
-    else {
-      // deal with note that note found
-      return res.status(400).json({
-        msg: 'Not Note Found'
-      })
-    }
+  const isAllowed = gotUserInput.every( update => allowUpdates.includes(update)); // false
+
+  if(!isAllowed) {
+    return res.status(400).json({
+      msg: 'Invalid Updates'
+    })
   }
-  // server error
-  catch(err){
-    return res.status(500).json('Internal Server Error')
-  };
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(404).json({ errors: errors.array() });
+  }
+
+  try {
+    const updateNote = await Note.findByIdAndUpdate(updateNoteId,req.body,{
+      new:true,
+      runValidators:true
+    });
+
+    if(!updateNote) return res.status(404).send('Note Not Found');
+    res.status(200).send(updateNote);
+    
+  } 
+  catch (error) {
+    res.status(500).send(err)
+  }
 })
 
 // delete note
