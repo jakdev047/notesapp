@@ -41,7 +41,7 @@ module.exports.addUser = async(req,res) => {
 module.exports.singleUser = async(req,res) => {
   const id = req.params.id;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id,'-password');
     if(user) {
       return res.status(200).send(user)
     }
