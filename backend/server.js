@@ -12,10 +12,8 @@ const PORT = process.env.PORT || 8080;
 
 /* ============ Controller ============= */
 
-
 /* ============ Connecting mongodb ============= */
 const {connectDB} = require('./db/dbConnect');
-
 connectDB();
 
 /* =============== Middleweare ================ */
@@ -26,13 +24,17 @@ app.use(bodyParser.json());
 /* ============ Route ============= */
 
 const notesRoute = require('./routes/routes');
+const usersRoute = require('./routes/users');
 const indexRoute = require('./routes');
 
 // notes route
 app.use('/notes',notesRoute);
 
+// users route
+app.use('/users',usersRoute);
+
 // base route
-app.use('/',indexRoute)
+app.use('/',indexRoute);
 
 /* ============ Listen ============= */
 app.listen(PORT,()=>{
