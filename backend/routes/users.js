@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { check } = require('express-validator');
 
-const {allUser,addUser,singleUser} = require('../controllers/userController');
+const {allUser,addUser,singleUser,loginController} = require('../controllers/userController');
 
 // all user get
 router.get('/',allUser);
@@ -29,5 +29,8 @@ router.post('/',[
 
 // single user get
 router.get('/:id',singleUser);
+
+// login 
+router.post('/login',loginController);
 
 module.exports = router;

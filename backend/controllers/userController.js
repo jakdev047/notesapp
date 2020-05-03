@@ -1,4 +1,5 @@
 const User = require('../models/users');
+const bcrypt = require('bcryptjs');
 
 const { validationResult } = require('express-validator');
 
@@ -53,3 +54,24 @@ module.exports.singleUser = async(req,res) => {
     console.log(error)
   }
 };
+
+module.exports.loginController = async(req,res) => {
+  // data capture 
+  const {email,password} = req.body;
+  try {
+    // check user email & password
+    const user = await User.findOne({email:email});
+    if(!user){
+      return res.status(400).send('Unable to Login');
+    }
+    const isMatchedPassword = bcrypt.compare(password,user.password);
+    if(!isMatchedPassword){
+      return res.status(400).send('Unable to Login');
+    }
+    // success msg
+    res.send('Login success');
+    } 
+  catch (error) {
+    console.log(error)
+  }
+}
