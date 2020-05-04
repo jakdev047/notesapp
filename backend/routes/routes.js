@@ -11,6 +11,8 @@ const {
   deleteNoteController
 } = require('../controllers/notesControllers');
 
+const {auth} = require('../middleweare/auth');
+
 // adding note
 router.post('/',[
     check('title').notEmpty().isLength({min:3,max:50}).withMessage('Titile is Required & must 3 to 50 charecter'),
@@ -18,7 +20,7 @@ router.post('/',[
   ],addNoteController);
 
 // notes route
-router.get('/',getAllNotesController);
+router.get('/',auth,getAllNotesController);
 
 // single note route
 router.get('/:id',[check('id','Note not Found').isMongoId()],getSingleNoteController);

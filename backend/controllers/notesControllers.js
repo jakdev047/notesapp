@@ -17,6 +17,7 @@ module.exports.addNoteController = async(req,res) => {
 };
 
 module.exports.getAllNotesController = async(req,res)=>{
+  console.log(req.user);
   try {
     const notes = await Note.find(); // all notes collections
     if( notes.length == 0) {
