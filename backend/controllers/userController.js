@@ -68,6 +68,14 @@ module.exports.loginController = async(req,res) => {
     if(!isMatchedPassword){
       return res.status(400).send('Unable to Login');
     }
+    // generate auth token
+    const token = user.generateAuthToken();
+    res.cookie('auth',token,{
+      httpOnly: true,
+      sameSite: true,
+      signed: true,
+      maxAge: 2 * 60 * 60 * 1000
+    });
     // success msg
     res.send('Login success');
     } 
