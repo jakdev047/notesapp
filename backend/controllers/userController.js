@@ -40,7 +40,7 @@ module.exports.addUser = async(req,res) => {
 };
 
 module.exports.singleUser = async(req,res) => {
-  const id = req.params.id;
+  const id = req.user._id;
   try {
     const user = await User.findById(id,'-password');
     if(user) {

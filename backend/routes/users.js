@@ -5,6 +5,8 @@ const { check } = require('express-validator');
 
 const {allUser,addUser,singleUser,loginController} = require('../controllers/userController');
 
+const {auth} = require('../middleweare/auth');
+
 // all user get
 router.get('/',allUser);
 
@@ -28,7 +30,7 @@ router.post('/',[
 ],addUser);
 
 // single user get
-router.get('/:id',singleUser);
+router.get('/me',auth,singleUser);
 
 // login 
 router.post('/login',loginController);
