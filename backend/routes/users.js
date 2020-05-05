@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { check } = require('express-validator');
 
-const {allUser,addUser,singleUser,loginController} = require('../controllers/userController');
+const {allUser,addUser,singleUser,loginController,logOutController} = require('../controllers/userController');
 
 const {auth} = require('../middleweare/auth');
 
@@ -34,5 +34,8 @@ router.get('/me',auth,singleUser);
 
 // login 
 router.post('/login',loginController);
+
+// logout
+router.post('/logout',auth,logOutController);
 
 module.exports = router;
