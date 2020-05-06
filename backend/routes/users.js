@@ -6,9 +6,10 @@ const { check } = require('express-validator');
 const {allUser,addUser,singleUser,loginController,logOutController} = require('../controllers/userController');
 
 const {auth} = require('../middleweare/auth');
+const {admin} = require('../middleweare/admin');
 
 // all user get
-router.get('/',allUser);
+router.get('/',[auth,admin],allUser);
 
 // add user
 router.post('/',[

@@ -1,7 +1,7 @@
 const User = require('../models/users');
 const bcrypt = require('bcryptjs');
-
 const { validationResult } = require('express-validator');
+const _ = require('lodash');
 
 module.exports.allUser = async(req,res) => {
   try {
@@ -25,7 +25,8 @@ module.exports.addUser = async(req,res) => {
   }
 
   try {
-    const user = new User(req.body);
+    const pickedProperty = _.pick(req.body,['firstName','lastName','email','password','confirmPassword']);
+    const user = new User(pickedProperty);
     const founduser = await User.findOne({email:req.body.email});
     if(founduser) {
       return res.status(400).send('User Alredy Register');

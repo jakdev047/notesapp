@@ -37,13 +37,17 @@ const usersSchema = new Schema(
         },
         message: " Password must not contain 'password' "
       }
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
   },
   {timestamps: true}
 );
 
 usersSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({id: this._id},'secretKey',{expiresIn:'2h'});
+  const token = jwt.sign({id: this._id,isAdmin:this.isAdmin},'secretKey',{expiresIn:'2h'});
   return token;
 }
 
