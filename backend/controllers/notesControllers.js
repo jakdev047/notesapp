@@ -78,7 +78,10 @@ module.exports.updateNoteController = async(req,res)=>{
   }
 
   try {
-    const updateNote = await Note.findByIdAndUpdate(updateNoteId,req.body,{
+    const updateNote = await Note.findOneAndUpdate({
+      _id: updateNoteId,
+      owner: req.user._id
+    },req.body,{
       new:true,
       runValidators:true
     });
@@ -99,7 +102,10 @@ module.exports.deleteNoteController = async(req,res)=>{
     return res.status(404).json({ errors: errors.array() });
   }
   try {
-    const deleteNote = await Note.findByIdAndDelete(deleteId);
+    const deleteNote = await Note.findOneAndDelete({
+      _id: deleteId,
+      owner: req.user._id
+    });
     if(deleteNote){
       return res.status(200).send(deleteNote);
     }
