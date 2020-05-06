@@ -7,7 +7,7 @@ module.exports.auth = async(req,res,next) => {
     const token = req.signedCookies['auth'];
     try {
       // verified token
-      const decoded = jwt.verify(token,'secretKey');
+      const decoded = jwt.verify(token,process.env.COOKIES_SECRET);
       // // user get
       const user = await User.findById(decoded.id);
       req.user = user;

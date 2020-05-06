@@ -47,7 +47,7 @@ const usersSchema = new Schema(
 );
 
 usersSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({id: this._id,isAdmin:this.isAdmin},'secretKey',{expiresIn:'2h'});
+  const token = jwt.sign({id: this._id,isAdmin:this.isAdmin},process.env.COOKIES_SECRET,{expiresIn:'2h'});
   return token;
 }
 

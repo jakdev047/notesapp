@@ -1,5 +1,6 @@
 /* =============== Require Files ================ */
 const express = require('express');
+require('dotenv').config({path:'./config/key.env'})
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookiParser = require('cookie-parser');
@@ -21,7 +22,7 @@ connectDB();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-app.use(cookiParser('secretKey'));
+app.use(cookiParser(process.env.COOKIES_SECRET));
 
 /* ============ Route ============= */
 
