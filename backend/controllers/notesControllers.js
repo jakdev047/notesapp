@@ -17,7 +17,6 @@ module.exports.addNoteController = async(req,res) => {
 };
 
 module.exports.getAllNotesController = async(req,res)=>{
-  console.log(req.user);
   try {
     const notes = await Note.find(); // all notes collections
     if( notes.length == 0) {
@@ -38,10 +37,11 @@ module.exports.getSingleNoteController = async(req,res)=>{
   const id = req.params.id;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(404).json({ errors: errors.array() });
+    return res.status(404).json({ errors: errors.array()});
   }
   try {
     const note = await Note.findById(id);
+    console.log(note)
     if ( note) {
       return res.status(200).send(note);
     }
