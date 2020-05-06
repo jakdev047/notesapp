@@ -4,10 +4,13 @@ const Note = require('../models/notes');
 module.exports.addNoteController = async(req,res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+    return res.status(422).json({ errors: errors.array()});
   }
   try {
-    const newNote = new Note(req.body);
+    const newNote = new Note({
+      ...req.body,
+      owner: req.user._id
+    });
     await newNote.save();
     res.status(200).json(newNote);
   } 
@@ -33,15 +36,14 @@ module.exports.getAllNotesController = async(req,res)=>{
   }
 };
 
-module.exports.getSingleNoteController = async(req,res)=>{
+module.exports.getSingleNoteController = async(req,res)=>{  
   const id = req.params.id;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(404).json({ errors: errors.array()});
   }
   try {
-    const note = await Note.findById(id);
-    console.log(note)
+    const note = await Note.findById(id).populate('owner','firstName lastName email');
     if ( note) {
       return res.status(200).send(note);
     }

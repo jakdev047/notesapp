@@ -15,6 +15,11 @@ const notesSchema = new Schema(
       minlength: [10,'Title must be 10 char in minimum'],
       maxlength: [500,'Title must be 500 char in maximum'],
       required: [true,'Title is Required'] 
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
     }
   },
   {
