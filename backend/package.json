@@ -6,6 +6,9 @@
   "scripts": {
     "start": "nodemon server.js"
   },
+  "engines": {
+    "node": "14.0.0"
+  },
   "author": "Jubayer Alam Khan",
   "license": "ISC",
   "dependencies": {
