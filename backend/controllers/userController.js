@@ -31,8 +31,16 @@ module.exports.addUser = async(req,res) => {
     if(founduser) {
       return res.status(400).send('User Alredy Register');
     }
+    // generate auth token
+    const token = user.generateAuthToken();
+    res.cookie('auth',token,{
+      httpOnly: true,
+      sameSite: true,
+      signed: true,
+      maxAge: 2 * 60 * 60 * 1000
+    });
     await user.save();
-    res.status(200).json(user);
+    res.status(200).json({token});
   } 
   catch (err) {
     res.status(500).send(err)
@@ -78,7 +86,7 @@ module.exports.loginController = async(req,res) => {
       maxAge: 2 * 60 * 60 * 1000
     });
     // success msg
-    res.send('Login success');
+    res.json({token});
     } 
   catch (error) {
     console.log(error)
