@@ -20,6 +20,7 @@ import Error from './pages/Error';
 import Registration from './pages/Registration';
 import Signup from './pages/Signup';
 import Addnotes from './pages/Addnotes';
+import SingleNote from './pages/SingleNote';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Header />
           <Switch>
             <Route exact path="/" component={Home}/>
+            <Route exact path="/notes/:id" component={SingleNote}/>
             <Route exact path="/add-notes" component={Addnotes}/>
             <Route exact path="/registration" component={Registration}/>
             <Route exact path="/login" component={Signup}/>
