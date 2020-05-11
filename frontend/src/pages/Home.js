@@ -1,13 +1,19 @@
 import React from 'react';
-import { Container } from 'reactstrap';
+import { Container, Row } from 'reactstrap';
 import { connect } from 'react-redux';
+import Note from '../components/Note';
 
 const Home = ({notes}) => {
   return (
-    <div className="home-section">
+    <div className="home-section my-3">
       <Container>
-        <h2>Home page</h2>
-        {console.log(notes)}
+        <Row>
+          {
+            notes.map(note=>{
+              return <Note key={note.id} note={note}/>
+            })
+          }
+        </Row>
       </Container>
     </div>
   );
