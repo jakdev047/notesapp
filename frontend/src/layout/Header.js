@@ -21,7 +21,7 @@ const Header = () => {
             <NavLink href="/login">Login</NavLink>
             <NavLink href="/registration">Registration</NavLink>
             <NavLink href="/add-notes">Add Notes</NavLink>
-            <NavLink href="/">Me</NavLink>
+            <NavLink href="/users/a">Me</NavLink>
             <Button color="primary">Logout</Button>
           </Collapse>
         </Container>

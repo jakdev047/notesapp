@@ -21,6 +21,7 @@ import Registration from './pages/Registration';
 import Signup from './pages/Signup';
 import Addnotes from './pages/Addnotes';
 import SingleNote from './pages/SingleNote';
+import SingleUser from './pages/SingleUser';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
             <Route exact path="/add-notes" component={Addnotes}/>
             <Route exact path="/registration" component={Registration}/>
             <Route exact path="/login" component={Signup}/>
+            <Route exact path="/users/:id" component={SingleUser}/>
             <Route path="*" component={Error}/>
           </Switch>
         </div>
