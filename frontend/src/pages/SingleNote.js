@@ -10,7 +10,7 @@ const SingleNote = ({notes}) => {
   return (
     <div>
       <Container>
-        <Card>
+        <Card className="my-3">
           <CardBody>
             <h3>{note.title}</h3>
             <p>{note.comment}</p>
