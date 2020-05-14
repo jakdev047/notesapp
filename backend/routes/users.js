@@ -37,6 +37,6 @@ router.get('/me',auth,singleUser);
 router.post('/login',loginController);
 
 // logout
-router.post('/logout',auth,logOutController);
+router.get('/logout',auth,logOutController);
 
 module.exports = router;

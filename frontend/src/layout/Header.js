@@ -8,8 +8,6 @@ const Header = ({logout}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
-  
-
   return (
     <div className="header-section">
       <Navbar color="dark" dark expand="md">

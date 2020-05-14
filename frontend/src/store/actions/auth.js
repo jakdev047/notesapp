@@ -1,4 +1,4 @@
-import { SIGN_UP_SUCCESS, SIGN_UP_FAIL, LOGIN_SUCCESS, LOGIN_FAIL } from './types';
+import { SIGN_UP_SUCCESS, SIGN_UP_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from './types';
 import axios from 'axios';
 
 export const signup = ({firstName,lastName,email,password,confirmPassword}) => async(dispatch) => {
@@ -57,16 +57,11 @@ export const login = ({email,password}) => async(dispatch) => {
 
 export const logout = () => async(dispatch) => {
   try {
-    const config = {
-      headers: {
-        'Content-type': 'application/json'
-      }
-    }
-
-    await axios.post('/users/logout',config);
+  
+    await axios.get('/users/logout');
 
     dispatch({
-      type: LOGIN_SUCCESS
+      type: LOGOUT
     })
   } 
   catch (error) {

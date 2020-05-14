@@ -94,6 +94,13 @@ module.exports.loginController = async(req,res) => {
 };
 
 module.exports.logOutController = (req,res) => {
-  res.clearCookie('auth');
-  res.send('Successfully logout');
+  // res.clearCookie('auth');
+  // res.send('Successfully logout');
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+  res.json({
+    msg: 'Logout Success'
+  })
 }

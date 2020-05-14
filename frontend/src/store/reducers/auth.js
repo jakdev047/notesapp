@@ -26,7 +26,7 @@ const reducers = (state=init,action) => {
       localStorage.removeItem('token');
       return {
         ...state,
-        token: null,
+        isLoading: false,
         isAuthenticated: null,
         user: null
       };

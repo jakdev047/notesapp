@@ -22,6 +22,7 @@ import Login from './pages/Login';
 import Addnotes from './pages/Addnotes';
 import SingleNote from './pages/SingleNote';
 import SingleUser from './pages/SingleUser';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 const App = () => {
   return (
@@ -32,7 +33,7 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/notes/:id" component={SingleNote}/>
-            <Route exact path="/add-notes" component={Addnotes}/>
+            <PrivateRoute exact path="/add-notes" component={Addnotes}/>
             <Route exact path="/registration" component={Registration}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/users/:id" component={SingleUser}/>
