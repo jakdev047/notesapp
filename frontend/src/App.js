@@ -18,7 +18,7 @@ import Header from './layout/Header';
 import Home from './pages/Home';
 import Error from './pages/Error';
 import Registration from './pages/Registration';
-import Signup from './pages/Signup';
+import Login from './pages/Login';
 import Addnotes from './pages/Addnotes';
 import SingleNote from './pages/SingleNote';
 import SingleUser from './pages/SingleUser';
@@ -34,7 +34,7 @@ const App = () => {
             <Route exact path="/notes/:id" component={SingleNote}/>
             <Route exact path="/add-notes" component={Addnotes}/>
             <Route exact path="/registration" component={Registration}/>
-            <Route exact path="/login" component={Signup}/>
+            <Route exact path="/login" component={Login}/>
             <Route exact path="/users/:id" component={SingleUser}/>
             <Route path="*" component={Error}/>
           </Switch>

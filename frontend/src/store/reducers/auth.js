@@ -1,4 +1,4 @@
-import { SIGN_UP_SUCCESS, SIGN_UP_FAIL } from "../actions/types";
+import { SIGN_UP_SUCCESS, SIGN_UP_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from "../actions/types";
 
 const init = {
   token: localStorage.getItem('token'), // to check token on ls in browser
@@ -11,6 +11,7 @@ const reducers = (state=init,action) => {
   const {type,payload} = action;
   switch (type) {
     case SIGN_UP_SUCCESS:
+    case LOGIN_SUCCESS:
       localStorage.setItem('token',payload);
       return {
         ...state,
@@ -20,6 +21,8 @@ const reducers = (state=init,action) => {
       };
     
     case SIGN_UP_FAIL:
+    case LOGIN_FAIL:
+    case LOGOUT:
       localStorage.removeItem('token');
       return {
         ...state,

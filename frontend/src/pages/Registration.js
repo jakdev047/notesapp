@@ -3,8 +3,11 @@ import { Form,FormGroup,Label,Input, Button, Container } from 'reactstrap';
 import { connect } from 'react-redux';
 import { signup } from '../store/actions/auth';
 
-const Registration = ({signup}) => {
-  // c
+import {Redirect} from "react-router-dom";
+
+const Registration = ({auth,signup}) => {
+  const {isAuthenticated} = auth;
+  // firstName,lastName,email,password,confirmPassword
   const [firstName,setFirstName] = useState('');
   const [lastName,setLastName] = useState('');
   const [email,setEmail] = useState('');
@@ -18,9 +21,7 @@ const Registration = ({signup}) => {
       alert("Please Enter fill the form")
     }
     else {
-      // const newUser = {firstName,lastName,email,password,confirmPassword}
-      console.log({firstName,lastName,email,password,confirmPassword})
-
+      console.log({firstName,lastName,email,password,confirmPassword});
       signup({firstName,lastName,email,password,confirmPassword});
 
       //reset form field
@@ -30,6 +31,10 @@ const Registration = ({signup}) => {
       setPassword('');
       setConfirmPassword('');
     }
+  }
+
+  if(isAuthenticated) {
+    return <Redirect to='/'/>
   }
 
   return (
@@ -72,6 +77,10 @@ const Registration = ({signup}) => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  }
+}
 
-
-export default connect(null,{signup})(Registration);
+export default connect(mapStateToProps,{signup})(Registration);
