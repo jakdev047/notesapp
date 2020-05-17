@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import CustomSpinner from '../../layout/CustomSpinner';
 
 const PrivateRoute = ({
   component: Component,
@@ -9,9 +8,10 @@ const PrivateRoute = ({
   ...rest
 }) => (
   <Route
-    {...rest}
-    render={(props) =>
-      isLoading ? ( <CustomSpinner /> ) : isAuthenticated ? ( <Component {...props} /> ) : ( <Redirect to='/login' /> )
+    {
+      ...rest}
+      render = { props =>
+      isAuthenticated && !isLoading ? ( <Component {...props} /> ) : ( <Redirect to='/login' /> )
     }
   />
 );
